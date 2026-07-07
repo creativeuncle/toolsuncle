@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 import { tools } from "../config/tools";
 import ToolPageShell from "../components/ToolPageShell";
+import FileDropzone from "../components/FileDropzone";
 import Button from "../components/Button";
 import { api, extractErrorMessage } from "../config/api";
 
@@ -31,8 +32,7 @@ function PromptCard({ prompt }) {
 }
 
 export default function AiPromptGenerator() {
-  const [idea, setIdea] = useState("");
-  const [style, setStyle] = useState("");
+  const [files, setFiles] = useState([]);
   const [count, setCount] = useState(4);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -43,7 +43,11 @@ export default function AiPromptGenerator() {
     setPrompts([]);
     setLoading(true);
     try {
-      const res = await api.post("/tools/ai-prompt-generator", { idea, style, count });
+      const formData = new FormData();
+      formData.append("image", files[0]);
+      formData.append("count", count);
+
+      const res = await api.post("/tools/ai-prompt-generator", formData);
       setPrompts(res.data.prompts || []);
     } catch (err) {
       setError(await extractErrorMessage(err));
@@ -57,42 +61,29 @@ export default function AiPromptGenerator() {
       icon={tool.icon}
       color={tool.color}
       title={tool.name}
-      description={tool.description}
+      description="Upload an image and get AI image-generation prompts that describe it — no typing required."
     >
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1.5">Image idea</label>
-          <textarea
-            value={idea}
-            onChange={(e) => setIdea(e.target.value)}
-            rows={3}
-            placeholder="e.g. a lighthouse on a stormy cliff at night"
-            className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
+      <FileDropzone
+        files={files}
+        onChange={(f) => {
+          setFiles(f);
+          setPrompts([]);
+        }}
+        accept={{ "image/jpeg": [".jpg", ".jpeg"], "image/png": [".png"], "image/webp": [".webp"] }}
+        multiple={false}
+        label="Drag & drop an image here, or click to select"
+      />
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1.5">Style (optional)</label>
-            <input
-              value={style}
-              onChange={(e) => setStyle(e.target.value)}
-              placeholder="e.g. watercolor"
-              className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1.5"># of prompts</label>
-            <input
-              type="number"
-              min={1}
-              max={10}
-              value={count}
-              onChange={(e) => setCount(Number(e.target.value))}
-              className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-        </div>
+      <div className="mt-6 max-w-[160px]">
+        <label className="block text-sm font-medium mb-1.5"># of prompts</label>
+        <input
+          type="number"
+          min={1}
+          max={10}
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value))}
+          className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
       </div>
 
       {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
@@ -106,7 +97,7 @@ export default function AiPromptGenerator() {
       )}
 
       <div className="mt-6 flex justify-end">
-        <Button onClick={handleGenerate} loading={loading} disabled={!idea.trim()}>
+        <Button onClick={handleGenerate} loading={loading} disabled={files.length === 0}>
           Generate Prompts
         </Button>
       </div>

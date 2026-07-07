@@ -1,25 +1,28 @@
 import { Router } from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { upload } from "../middleware/upload.js";
 
 const router = Router();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-router.post("/", async (req, res, next) => {
+router.post("/", upload.single("image"), async (req, res, next) => {
   try {
-    const { idea, style, count } = req.body;
-
-    if (!idea || !idea.trim()) {
-      return res.status(400).json({ error: "An image idea/description is required" });
+    if (!req.file) {
+      return res.status(400).json({ error: "An image file is required" });
     }
 
-    const promptCount = Math.min(10, Math.max(1, parseInt(count, 10) || 4));
+    const count = Math.min(10, Math.max(1, parseInt(req.body.count, 10) || 4));
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-    const result = await model.generateContent(
-      `Generate ${promptCount} detailed, creative AI image generation prompts based on this idea: "${idea}".${
-        style ? ` Preferred style: ${style}.` : ""
-      } Each prompt should be vivid, specific, and include composition, lighting, and style details. Return ONLY a JSON array of strings, no other text, no markdown code fences.`
-    );
+    const result = await model.generateContent([
+      {
+        inlineData: {
+          mimeType: req.file.mimetype,
+          data: req.file.buffer.toString("base64"),
+        },
+      },
+      `Look at this image and generate ${count} detailed AI image generation prompts that could recreate a similar image. Describe the subject, composition, lighting, color palette, and artistic style you observe. Return ONLY a JSON array of strings, no other text, no markdown code fences.`,
+    ]);
 
     const text = result.response.text().replace(/```json|```/g, "").trim();
     let prompts;
@@ -35,6 +38,11 @@ router.post("/", async (req, res, next) => {
       return res
         .status(401)
         .json({ error: "AI service is not configured correctly. Please set a valid GEMINI_API_KEY." });
+    }
+    if (err.status === 429) {
+      return res
+        .status(429)
+        .json({ error: "Gemini's free-tier request limit was hit. Wait a bit and try again." });
     }
     next(err);
   }

@@ -51,7 +51,7 @@ export const tools = [
   {
     id: "ai-prompt-generator",
     name: "AI Image Prompt Generator",
-    description: "Turn a simple idea into detailed prompts for AI image tools.",
+    description: "Upload an image and get AI image-generation prompts describing it.",
     icon: Sparkles,
     path: "/tools/ai-prompt-generator",
     color: "from-fuchsia-500 to-pink-400",
