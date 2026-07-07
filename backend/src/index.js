@@ -34,6 +34,6 @@ app.use((err, req, res, next) => {
   res.status(status).json({ error: err.message || "Something went wrong" });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`toolsuncle backend running on http://localhost:${PORT}`);
 });
