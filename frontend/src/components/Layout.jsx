@@ -13,7 +13,7 @@ export default function Layout({ children }) {
             <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 text-white">
               <Wrench size={18} />
             </span>
-            ToolsUncle
+            Dctools
           </Link>
           {!isHome && (
             <Link
@@ -32,7 +32,7 @@ export default function Layout({ children }) {
 
       <footer className="border-t border-slate-200 dark:border-slate-800 py-6">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-sm text-slate-500 dark:text-slate-400 text-center">
-          Built with care — ToolsUncle
+          Built with care — Dctools
         </div>
       </footer>
     </div>
