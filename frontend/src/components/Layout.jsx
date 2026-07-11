@@ -3,7 +3,7 @@ import logo from "../assets/logo.svg";
 
 export default function Layout({ children }) {
   const location = useLocation();
-  const isHome = location.pathname === "/";
+  const isToolPage = location.pathname.startsWith("/tools/");
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -12,14 +12,28 @@ export default function Layout({ children }) {
           <Link to="/" className="flex items-center rounded-lg bg-slate-900 px-3 py-2">
             <img src={logo} alt="Dctools" className="h-5 w-auto" />
           </Link>
-          {!isHome && (
-            <Link
-              to="/"
-              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-            >
-              ← All tools
-            </Link>
-          )}
+
+          <nav className="flex items-center gap-6">
+            {isToolPage ? (
+              <Link
+                to="/"
+                className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+              >
+                ← All tools
+              </Link>
+            ) : (
+              <Link
+                to="/blog"
+                className={`text-sm font-medium transition-colors ${
+                  location.pathname === "/blog"
+                    ? "text-indigo-600 dark:text-indigo-400"
+                    : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+                }`}
+              >
+                Blog
+              </Link>
+            )}
+          </nav>
         </div>
       </header>
 

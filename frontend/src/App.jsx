@@ -7,6 +7,7 @@ import MergePdf from "./pages/MergePdf";
 import ImageCompressor from "./pages/ImageCompressor";
 import HeicToJpg from "./pages/HeicToJpg";
 import AiPromptGenerator from "./pages/AiPromptGenerator";
+import Blog from "./pages/Blog";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/tools/image-compressor" element={<ImageCompressor />} />
         <Route path="/tools/heic-to-jpg" element={<HeicToJpg />} />
         <Route path="/tools/ai-prompt-generator" element={<AiPromptGenerator />} />
+        <Route path="/blog" element={<Blog />} />
       </Routes>
     </Layout>
   );
