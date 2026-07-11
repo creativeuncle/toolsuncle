@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import logo from "../assets/logo.svg";
+import logo from "../assets/dc-logo-new.png";
 
 export default function Layout({ children }) {
   const location = useLocation();
@@ -9,8 +9,8 @@ export default function Layout({ children }) {
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center rounded-lg bg-slate-900 px-3 py-2">
-            <img src={logo} alt="Dctools" className="h-5 w-auto" />
+          <Link to="/">
+            <img src={logo} alt="Dctools" style={{ height: "30px" }} className="w-auto" />
           </Link>
 
           <nav className="flex items-center gap-6">
