@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import JpgToPdf from "./pages/JpgToPdf";
@@ -8,11 +8,24 @@ import ImageCompressor from "./pages/ImageCompressor";
 import HeicToJpg from "./pages/HeicToJpg";
 import AiPromptGenerator from "./pages/AiPromptGenerator";
 import Blog from "./pages/Blog";
+import AdminLogin from "./admin/pages/AdminLogin";
+import AdminBlogs from "./admin/pages/AdminBlogs";
+import AdminAddPost from "./admin/pages/AdminAddPost";
+import AdminCategories from "./admin/pages/AdminCategories";
+import RequireAdmin from "./admin/RequireAdmin";
+
+function PublicLayout() {
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
+}
 
 function App() {
   return (
-    <Layout>
-      <Routes>
+    <Routes>
+      <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/tools/jpg-to-pdf" element={<JpgToPdf />} />
         <Route path="/tools/pdf-to-jpg" element={<PdfToJpg />} />
@@ -21,8 +34,35 @@ function App() {
         <Route path="/tools/heic-to-jpg" element={<HeicToJpg />} />
         <Route path="/tools/ai-prompt-generator" element={<AiPromptGenerator />} />
         <Route path="/blog" element={<Blog />} />
-      </Routes>
-    </Layout>
+      </Route>
+
+      <Route path="/admin" element={<Navigate to="/admin/blogs" replace />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route
+        path="/admin/blogs"
+        element={
+          <RequireAdmin>
+            <AdminBlogs />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/admin/blogs/new"
+        element={
+          <RequireAdmin>
+            <AdminAddPost />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/admin/categories"
+        element={
+          <RequireAdmin>
+            <AdminCategories />
+          </RequireAdmin>
+        }
+      />
+    </Routes>
   );
 }
 
