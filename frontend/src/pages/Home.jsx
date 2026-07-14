@@ -5,7 +5,7 @@ import ToolCard from "../components/ToolCard";
 export default function Home() {
   return (
     <div>
-      <section className="relative left-1/2 -ml-[50vw] w-screen -mt-10 bg-slate-100 dark:bg-slate-900 px-4 sm:px-6 py-20">
+      <section className="relative left-1/2 -ml-[50vw] w-screen -mt-10 bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 py-20">
         <div className="max-w-2xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/60 px-4 py-1.5 text-sm text-slate-600 dark:text-slate-300 mb-6">
             <Puzzle size={16} className="text-amber-500 dark:text-amber-400" />
