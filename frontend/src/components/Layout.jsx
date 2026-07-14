@@ -17,7 +17,7 @@ export default function Layout({ children }) {
             <img
               src={theme === "dark" ? logoDark : logoLight}
               alt="Dctools"
-              style={{ height: "30px" }}
+              style={{ height: "24px" }}
               className="w-auto"
             />
           </Link>
