@@ -8,6 +8,8 @@ import ImageCompressor from "./pages/ImageCompressor";
 import HeicToJpg from "./pages/HeicToJpg";
 import AiPromptGenerator from "./pages/AiPromptGenerator";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import BlogCategory from "./pages/BlogCategory";
 import AdminLogin from "./admin/pages/AdminLogin";
 import AdminBlogs from "./admin/pages/AdminBlogs";
 import AdminAddPost from "./admin/pages/AdminAddPost";
@@ -35,6 +37,8 @@ function App() {
         <Route path="/tools/heic-to-jpg" element={<HeicToJpg />} />
         <Route path="/tools/ai-prompt-generator" element={<AiPromptGenerator />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/category/:slug" element={<BlogCategory />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
       </Route>
 
       <Route path="/admin" element={<Navigate to="/admin/blogs" replace />} />
