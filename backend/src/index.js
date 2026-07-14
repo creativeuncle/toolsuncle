@@ -9,6 +9,7 @@ import mergePdfRouter from "./routes/mergePdf.js";
 import compressImageRouter from "./routes/compressImage.js";
 import heicToJpgRouter from "./routes/heicToJpg.js";
 import aiPromptGeneratorRouter from "./routes/aiPromptGenerator.js";
+import postsRouter from "./routes/posts.js";
 import adminAuthRouter from "./routes/admin/auth.js";
 import adminPostsRouter from "./routes/admin/posts.js";
 import adminCategoriesRouter from "./routes/admin/categories.js";
@@ -29,6 +30,8 @@ app.use("/api/tools/merge-pdf", mergePdfRouter);
 app.use("/api/tools/compress-image", compressImageRouter);
 app.use("/api/tools/heic-to-jpg", heicToJpgRouter);
 app.use("/api/tools/ai-prompt-generator", aiPromptGeneratorRouter);
+
+app.use("/api/posts", postsRouter);
 
 app.use("/api/admin/auth", adminAuthRouter);
 app.use("/api/admin/posts", adminPostsRouter);
