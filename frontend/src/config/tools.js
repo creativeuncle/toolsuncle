@@ -15,6 +15,8 @@ export const tools = [
     icon: FileText,
     path: "/tools/jpg-to-pdf",
     color: "from-rose-500 to-orange-400",
+    category: "PDF Tools",
+    categorySlug: "pdf-tools",
   },
   {
     id: "pdf-to-jpg",
@@ -23,6 +25,8 @@ export const tools = [
     icon: FileImage,
     path: "/tools/pdf-to-jpg",
     color: "from-sky-500 to-cyan-400",
+    category: "PDF Tools",
+    categorySlug: "pdf-tools",
   },
   {
     id: "merge-pdf",
@@ -31,6 +35,8 @@ export const tools = [
     icon: Layers,
     path: "/tools/merge-pdf",
     color: "from-violet-500 to-purple-400",
+    category: "PDF Tools",
+    categorySlug: "pdf-tools",
   },
   {
     id: "image-compressor",
@@ -39,6 +45,8 @@ export const tools = [
     icon: ImageDown,
     path: "/tools/image-compressor",
     color: "from-emerald-500 to-teal-400",
+    category: "Image Tools",
+    categorySlug: "image-tools",
   },
   {
     id: "heic-to-jpg",
@@ -47,6 +55,8 @@ export const tools = [
     icon: RefreshCcw,
     path: "/tools/heic-to-jpg",
     color: "from-amber-500 to-yellow-400",
+    category: "Image Tools",
+    categorySlug: "image-tools",
   },
   {
     id: "ai-prompt-generator",
@@ -55,5 +65,7 @@ export const tools = [
     icon: Sparkles,
     path: "/tools/ai-prompt-generator",
     color: "from-fuchsia-500 to-pink-400",
+    category: "AI Tools",
+    categorySlug: "ai-tools",
   },
 ];

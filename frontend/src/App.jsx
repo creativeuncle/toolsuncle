@@ -1,6 +1,7 @@
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
+import AllTools from "./pages/AllTools";
 import JpgToPdf from "./pages/JpgToPdf";
 import PdfToJpg from "./pages/PdfToJpg";
 import MergePdf from "./pages/MergePdf";
@@ -30,6 +31,7 @@ function App() {
     <Routes>
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/tools" element={<AllTools />} />
         <Route path="/tools/jpg-to-pdf" element={<JpgToPdf />} />
         <Route path="/tools/pdf-to-jpg" element={<PdfToJpg />} />
         <Route path="/tools/merge-pdf" element={<MergePdf />} />
