@@ -68,4 +68,70 @@ router.post("/", requireAdmin, async (req, res, next) => {
   }
 });
 
+router.get("/:id", requireAdmin, async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id).populate("category", "name slug");
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+    res.json({ post });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put("/:id", requireAdmin, async (req, res, next) => {
+  try {
+    const { title, category, content, thumbnailUrl, seoTitle, seoDescription } = req.body;
+
+    if (!title || !title.trim()) {
+      return res.status(400).json({ error: "Title is required" });
+    }
+    if (!category) {
+      return res.status(400).json({ error: "Category is required" });
+    }
+    if (!content || !content.trim()) {
+      return res.status(400).json({ error: "Content is required" });
+    }
+
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    if (title.trim() !== post.title) {
+      let slug = slugify(title);
+      const existing = await Post.findOne({ slug, _id: { $ne: post._id } });
+      if (existing) {
+        slug = `${slug}-${Date.now().toString(36)}`;
+      }
+      post.slug = slug;
+    }
+
+    post.title = title.trim();
+    post.category = category;
+    post.content = content;
+    post.thumbnailUrl = thumbnailUrl || "";
+    post.seoTitle = seoTitle || "";
+    post.seoDescription = seoDescription || "";
+    await post.save();
+
+    res.json({ post });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.delete("/:id", requireAdmin, async (req, res, next) => {
+  try {
+    const post = await Post.findByIdAndDelete(req.params.id);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+    res.json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;

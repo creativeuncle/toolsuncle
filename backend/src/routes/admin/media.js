@@ -16,7 +16,8 @@ router.post("/", requireAdmin, upload.single("image"), async (req, res, next) =>
       data: req.file.buffer,
     });
 
-    res.status(201).json({ url: `/api/admin/media/${media._id}` });
+    const publicUrl = `${req.protocol}://${req.get("host")}/api/admin/media/${media._id}`;
+    res.status(201).json({ url: publicUrl });
   } catch (err) {
     next(err);
   }

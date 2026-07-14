@@ -11,6 +11,7 @@ import Blog from "./pages/Blog";
 import AdminLogin from "./admin/pages/AdminLogin";
 import AdminBlogs from "./admin/pages/AdminBlogs";
 import AdminAddPost from "./admin/pages/AdminAddPost";
+import AdminEditPost from "./admin/pages/AdminEditPost";
 import AdminCategories from "./admin/pages/AdminCategories";
 import RequireAdmin from "./admin/RequireAdmin";
 
@@ -51,6 +52,14 @@ function App() {
         element={
           <RequireAdmin>
             <AdminAddPost />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/admin/blogs/:id/edit"
+        element={
+          <RequireAdmin>
+            <AdminEditPost />
           </RequireAdmin>
         }
       />
