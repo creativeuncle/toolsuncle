@@ -1,4 +1,4 @@
-import { FileText, Image as ImageIcon, Sparkles } from "lucide-react";
+import { FileText, Image as ImageIcon, Sparkles, Type, Wrench } from "lucide-react";
 import { tools } from "./tools";
 
 const categoryMeta = [
@@ -20,13 +20,27 @@ const categoryMeta = [
     icon: Sparkles,
     color: "from-fuchsia-500 to-pink-400",
   },
+  {
+    slug: "text-tools",
+    name: "Text Tools",
+    icon: Type,
+    color: "from-blue-500 to-indigo-400",
+  },
+  {
+    slug: "utilities",
+    name: "Utilities",
+    icon: Wrench,
+    color: "from-slate-700 to-slate-500",
+  },
 ];
 
-export const categories = categoryMeta.map((cat) => {
-  const catTools = tools.filter((t) => t.categorySlug === cat.slug);
-  return {
-    ...cat,
-    count: catTools.length,
-    summary: catTools.map((t) => t.name).join(", "),
-  };
-});
+export const categories = categoryMeta
+  .map((cat) => {
+    const catTools = tools.filter((t) => t.categorySlug === cat.slug);
+    return {
+      ...cat,
+      count: catTools.length,
+      summary: catTools.map((t) => t.name).join(", "),
+    };
+  })
+  .filter((cat) => cat.count > 0);

@@ -8,6 +8,10 @@ import MergePdf from "./pages/MergePdf";
 import ImageCompressor from "./pages/ImageCompressor";
 import HeicToJpg from "./pages/HeicToJpg";
 import AiPromptGenerator from "./pages/AiPromptGenerator";
+import ImageCropper from "./pages/ImageCropper";
+import WordCounter from "./pages/WordCounter";
+import LoremIpsumGenerator from "./pages/LoremIpsumGenerator";
+import QrCodeGenerator from "./pages/QrCodeGenerator";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogCategory from "./pages/BlogCategory";
@@ -38,6 +42,10 @@ function App() {
         <Route path="/tools/image-compressor" element={<ImageCompressor />} />
         <Route path="/tools/heic-to-jpg" element={<HeicToJpg />} />
         <Route path="/tools/ai-prompt-generator" element={<AiPromptGenerator />} />
+        <Route path="/tools/image-cropper" element={<ImageCropper />} />
+        <Route path="/tools/word-counter" element={<WordCounter />} />
+        <Route path="/tools/lorem-ipsum-generator" element={<LoremIpsumGenerator />} />
+        <Route path="/tools/qr-code-generator" element={<QrCodeGenerator />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/category/:slug" element={<BlogCategory />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
