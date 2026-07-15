@@ -13,6 +13,7 @@ import WordCounter from "./pages/WordCounter";
 import LoremIpsumGenerator from "./pages/LoremIpsumGenerator";
 import QrCodeGenerator from "./pages/QrCodeGenerator";
 import InvoiceGenerator from "./pages/InvoiceGenerator";
+import ResumeBuilder from "./pages/ResumeBuilder";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogCategory from "./pages/BlogCategory";
@@ -48,6 +49,7 @@ function App() {
         <Route path="/tools/lorem-ipsum-generator" element={<LoremIpsumGenerator />} />
         <Route path="/tools/qr-code-generator" element={<QrCodeGenerator />} />
         <Route path="/tools/invoice-generator" element={<InvoiceGenerator />} />
+        <Route path="/tools/resume-builder" element={<ResumeBuilder />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/category/:slug" element={<BlogCategory />} />
         <Route path="/blog/:slug" element={<BlogPost />} />

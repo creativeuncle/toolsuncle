@@ -3,6 +3,8 @@ import { Loader2 } from "lucide-react";
 const variants = {
   primary: "bg-indigo-600 hover:bg-indigo-500",
   success: "bg-emerald-600 hover:bg-emerald-500",
+  secondary:
+    "bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-100",
 };
 
 export default function Button({

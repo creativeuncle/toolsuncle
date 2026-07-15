@@ -10,6 +10,7 @@ import {
   Hash,
   Crop,
   Receipt,
+  FileUser,
 } from "lucide-react";
 
 export const tools = [
@@ -122,5 +123,15 @@ export const tools = [
     color: "from-green-600 to-emerald-500",
     category: "Business Tools",
     categorySlug: "business-tools",
+  },
+  {
+    id: "resume-builder",
+    name: "Resume Builder",
+    description: "Build a creative resume with a photo, work history, and skills, then download it as a PDF.",
+    icon: FileUser,
+    path: "/tools/resume-builder",
+    color: "from-blue-600 to-cyan-500",
+    category: "Career Tools",
+    categorySlug: "career-tools",
   },
 ];
