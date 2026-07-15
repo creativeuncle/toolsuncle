@@ -1,4 +1,4 @@
-import { FileText, Image as ImageIcon, Sparkles, Type, Wrench, Receipt, FileUser } from "lucide-react";
+import { FileText, Image as ImageIcon, Sparkles, Type, Wrench, Receipt, FileUser, SquarePlay } from "lucide-react";
 import { tools } from "./tools";
 
 const categoryMeta = [
@@ -43,6 +43,12 @@ const categoryMeta = [
     name: "Career Tools",
     icon: FileUser,
     color: "from-blue-600 to-cyan-500",
+  },
+  {
+    slug: "creator-tools",
+    name: "Creator Tools",
+    icon: SquarePlay,
+    color: "from-red-600 to-rose-500",
   },
 ];
 

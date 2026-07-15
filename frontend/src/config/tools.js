@@ -13,6 +13,7 @@ import {
   FileUser,
   Braces,
   Hash as HashIcon,
+  SquarePlay,
 } from "lucide-react";
 
 export const tools = [
@@ -155,5 +156,15 @@ export const tools = [
     color: "from-pink-500 to-rose-400",
     category: "Utilities",
     categorySlug: "utilities",
+  },
+  {
+    id: "youtube-money-calculator",
+    name: "YouTube Money Calculator",
+    description: "Look up any YouTube channel's stats and estimate its ad revenue.",
+    icon: SquarePlay,
+    path: "/tools/youtube-money-calculator",
+    color: "from-red-600 to-rose-500",
+    category: "Creator Tools",
+    categorySlug: "creator-tools",
   },
 ];
