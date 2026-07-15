@@ -11,6 +11,8 @@ import {
   Crop,
   Receipt,
   FileUser,
+  Braces,
+  Hash as HashIcon,
 } from "lucide-react";
 
 export const tools = [
@@ -133,5 +135,25 @@ export const tools = [
     color: "from-blue-600 to-cyan-500",
     category: "Career Tools",
     categorySlug: "career-tools",
+  },
+  {
+    id: "json-formatter",
+    name: "JSON Formatter & Validator",
+    description: "Format, validate, and minify JSON with instant error feedback.",
+    icon: Braces,
+    path: "/tools/json-formatter",
+    color: "from-amber-600 to-orange-500",
+    category: "Utilities",
+    categorySlug: "utilities",
+  },
+  {
+    id: "hashtag-generator",
+    name: "Hashtag Generator",
+    description: "Generate trending, category-specific hashtags for your posts.",
+    icon: HashIcon,
+    path: "/tools/hashtag-generator",
+    color: "from-pink-500 to-rose-400",
+    category: "Utilities",
+    categorySlug: "utilities",
   },
 ];
