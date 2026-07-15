@@ -9,8 +9,36 @@ import logoDark from "../assets/dctools-updated-dark.png";
 const navLinks = [
   { label: "Home", path: "/" },
   { label: "All Tools", path: "/tools" },
+  { label: "AI Tools", path: "/tools", search: "?category=ai-tools" },
   { label: "Blog", path: "/blog" },
 ];
+
+function isLinkActive(link, location) {
+  if (link.path === "/") return location.pathname === "/";
+  if (link.search !== undefined) {
+    return location.pathname === link.path && location.search === link.search;
+  }
+  if (link.path === "/tools") {
+    return location.pathname === "/tools" && !location.search;
+  }
+  return location.pathname.startsWith(link.path);
+}
+
+function NavLinks({ location, className }) {
+  return navLinks.map((link) => (
+    <Link
+      key={link.label}
+      to={`${link.path}${link.search || ""}`}
+      className={`${className} ${
+        isLinkActive(link, location)
+          ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
+          : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+      }`}
+    >
+      {link.label}
+    </Link>
+  ));
+}
 
 export default function Layout({ children }) {
   const location = useLocation();
@@ -30,23 +58,7 @@ export default function Layout({ children }) {
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => {
-              const active =
-                link.path === "/" ? location.pathname === "/" : location.pathname.startsWith(link.path);
-              return (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-                    active
-                      ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
-                      : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+            <NavLinks location={location} className="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors" />
             <CategoriesDropdown />
           </nav>
 
@@ -64,23 +76,10 @@ export default function Layout({ children }) {
         </div>
 
         <nav className="md:hidden flex items-center gap-1 px-4 pb-3 overflow-x-auto">
-          {navLinks.map((link) => {
-            const active =
-              link.path === "/" ? location.pathname === "/" : location.pathname.startsWith(link.path);
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
-                    : "text-slate-600 dark:text-slate-300"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+          <NavLinks
+            location={location}
+            className="shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
+          />
           <CategoriesDropdown />
         </nav>
       </header>
