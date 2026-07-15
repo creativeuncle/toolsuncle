@@ -9,6 +9,7 @@ import {
   Type,
   Hash,
   Crop,
+  Receipt,
 } from "lucide-react";
 
 export const tools = [
@@ -111,5 +112,15 @@ export const tools = [
     color: "from-slate-700 to-slate-500",
     category: "Utilities",
     categorySlug: "utilities",
+  },
+  {
+    id: "invoice-generator",
+    name: "Invoice Generator",
+    description: "Create a professional invoice with line items and totals, then download it as a PDF.",
+    icon: Receipt,
+    path: "/tools/invoice-generator",
+    color: "from-green-600 to-emerald-500",
+    category: "Business Tools",
+    categorySlug: "business-tools",
   },
 ];

@@ -1,4 +1,4 @@
-import { FileText, Image as ImageIcon, Sparkles, Type, Wrench } from "lucide-react";
+import { FileText, Image as ImageIcon, Sparkles, Type, Wrench, Receipt } from "lucide-react";
 import { tools } from "./tools";
 
 const categoryMeta = [
@@ -31,6 +31,12 @@ const categoryMeta = [
     name: "Utilities",
     icon: Wrench,
     color: "from-slate-700 to-slate-500",
+  },
+  {
+    slug: "business-tools",
+    name: "Business Tools",
+    icon: Receipt,
+    color: "from-green-600 to-emerald-500",
   },
 ];
 
