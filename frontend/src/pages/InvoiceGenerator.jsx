@@ -61,6 +61,7 @@ export default function InvoiceGenerator() {
   const fileInputRef = useRef(null);
   const [logoDataUrl, setLogoDataUrl] = useState("");
   const [logoFormat, setLogoFormat] = useState("PNG");
+  const [logoDimensions, setLogoDimensions] = useState(null);
 
   const [invoiceNumber, setInvoiceNumber] = useState("INV-0001");
   const [currencyCode, setCurrencyCode] = useState("USD");
@@ -94,7 +95,15 @@ export default function InvoiceGenerator() {
     if (!file) return;
     setLogoFormat(file.type === "image/png" ? "PNG" : "JPEG");
     const reader = new FileReader();
-    reader.onload = () => setLogoDataUrl(reader.result);
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      const img = new Image();
+      img.onload = () => {
+        setLogoDataUrl(dataUrl);
+        setLogoDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+      };
+      img.src = dataUrl;
+    };
     reader.readAsDataURL(file);
   };
 
@@ -121,6 +130,8 @@ export default function InvoiceGenerator() {
     generateInvoicePdf({
       logoDataUrl,
       logoFormat,
+      logoWidth: logoDimensions?.width,
+      logoHeight: logoDimensions?.height,
       invoiceNumber,
       yourDetails,
       billTo,
@@ -135,7 +146,7 @@ export default function InvoiceGenerator() {
       amountPaid,
       notes,
       terms,
-      currencySymbol,
+      currencyCode,
     });
   };
 

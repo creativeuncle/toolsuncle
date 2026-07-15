@@ -1,14 +1,28 @@
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
-function money(amount, symbol) {
-  return `${symbol}${(Number(amount) || 0).toFixed(2)}`;
+function money(amount, currencyCode) {
+  return `${currencyCode} ${(Number(amount) || 0).toFixed(2)}`;
+}
+
+function fitLogoSize(logoWidth, logoHeight, maxW, maxH) {
+  if (!logoWidth || !logoHeight) return { width: maxW, height: maxH };
+  const aspect = logoWidth / logoHeight;
+  let width = maxW;
+  let height = width / aspect;
+  if (height > maxH) {
+    height = maxH;
+    width = height * aspect;
+  }
+  return { width, height };
 }
 
 export function generateInvoicePdf(invoice) {
   const {
     logoDataUrl,
     logoFormat,
+    logoWidth,
+    logoHeight,
     invoiceNumber,
     yourDetails,
     billTo,
@@ -23,7 +37,7 @@ export function generateInvoicePdf(invoice) {
     amountPaid,
     notes,
     terms,
-    currencySymbol,
+    currencyCode,
   } = invoice;
 
   const doc = new jsPDF({ unit: "mm", format: "a4" });
@@ -33,7 +47,8 @@ export function generateInvoicePdf(invoice) {
 
   if (logoDataUrl) {
     try {
-      doc.addImage(logoDataUrl, logoFormat, marginX, y, 30, 30, undefined, "FAST");
+      const { width, height } = fitLogoSize(logoWidth, logoHeight, 35, 25);
+      doc.addImage(logoDataUrl, logoFormat, marginX, y, width, height, undefined, "FAST");
     } catch {
       // ignore unsupported image data
     }
@@ -94,8 +109,8 @@ export function generateInvoicePdf(invoice) {
     body: lineItems.map((item) => [
       item.item || "-",
       String(item.quantity || 0),
-      money(item.rate, currencySymbol),
-      money((item.quantity || 0) * (item.rate || 0), currencySymbol),
+      money(item.rate, currencyCode),
+      money((item.quantity || 0) * (item.rate || 0), currencyCode),
     ]),
     headStyles: { fillColor: [30, 41, 59] },
     styles: { fontSize: 10 },
@@ -117,10 +132,10 @@ export function generateInvoicePdf(invoice) {
   const totalsX = pageWidth - marginX;
   const totalsLabelX = totalsX - 55;
   const totalsRows = [
-    ["Subtotal", money(subtotal, currencySymbol)],
-    [`Discount (${discount || 0}%)`, money(discountAmount, currencySymbol)],
-    [`Tax (${tax || 0}%)`, money(taxAmount, currencySymbol)],
-    ["Shipping", money(shipping, currencySymbol)],
+    ["Subtotal", money(subtotal, currencyCode)],
+    [`Discount (${discount || 0}%)`, money(discountAmount, currencyCode)],
+    [`Tax (${tax || 0}%)`, money(taxAmount, currencyCode)],
+    ["Shipping", money(shipping, currencyCode)],
   ];
 
   doc.setFontSize(10);
@@ -137,18 +152,18 @@ export function generateInvoicePdf(invoice) {
   doc.setFont(undefined, "bold");
   doc.setFontSize(12);
   doc.text("Total", totalsLabelX, y);
-  doc.text(money(total, currencySymbol), totalsX, y, { align: "right" });
+  doc.text(money(total, currencyCode), totalsX, y, { align: "right" });
   y += 8;
 
   doc.setFont(undefined, "normal");
   doc.setFontSize(10);
   doc.text("Amount Paid", totalsLabelX, y);
-  doc.text(money(amountPaid, currencySymbol), totalsX, y, { align: "right" });
+  doc.text(money(amountPaid, currencyCode), totalsX, y, { align: "right" });
   y += 6;
 
   doc.setFont(undefined, "bold");
   doc.text("Balance Due", totalsLabelX, y);
-  doc.text(money(balanceDue, currencySymbol), totalsX, y, { align: "right" });
+  doc.text(money(balanceDue, currencyCode), totalsX, y, { align: "right" });
   y += 14;
 
   doc.setFont(undefined, "normal");
