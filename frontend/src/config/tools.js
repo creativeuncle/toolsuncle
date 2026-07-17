@@ -14,6 +14,7 @@ import {
   Braces,
   Hash as HashIcon,
   SquarePlay,
+  BadgePercent,
 } from "lucide-react";
 
 export const tools = [
@@ -166,5 +167,15 @@ export const tools = [
     color: "from-red-600 to-rose-500",
     category: "Creator Tools",
     categorySlug: "creator-tools",
+  },
+  {
+    id: "gst-calculator",
+    name: "GST Calculator",
+    description: "Calculate GST amount and total from an amount, instantly and for free.",
+    icon: BadgePercent,
+    path: "/tools/gst-calculator",
+    color: "from-green-600 to-emerald-500",
+    category: "Business Tools",
+    categorySlug: "business-tools",
   },
 ];
