@@ -15,6 +15,7 @@ import {
   Hash as HashIcon,
   SquarePlay,
   BadgePercent,
+  ReceiptIndianRupee,
 } from "lucide-react";
 
 export const tools = [
@@ -125,6 +126,16 @@ export const tools = [
     icon: Receipt,
     path: "/tools/invoice-generator",
     color: "from-green-600 to-emerald-500",
+    category: "Business Tools",
+    categorySlug: "business-tools",
+  },
+  {
+    id: "salary-slip-generator",
+    name: "Salary Slip Generator",
+    description: "Create a detailed payslip with earnings, deductions, and auto-calculated PF/ESI, then download it as a PDF.",
+    icon: ReceiptIndianRupee,
+    path: "/tools/salary-slip-generator",
+    color: "from-teal-600 to-emerald-500",
     category: "Business Tools",
     categorySlug: "business-tools",
   },

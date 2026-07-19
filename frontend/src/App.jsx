@@ -13,6 +13,7 @@ import WordCounter from "./pages/WordCounter";
 import LoremIpsumGenerator from "./pages/LoremIpsumGenerator";
 import QrCodeGenerator from "./pages/QrCodeGenerator";
 import InvoiceGenerator from "./pages/InvoiceGenerator";
+import SalarySlipGenerator from "./pages/SalarySlipGenerator";
 import ResumeBuilder from "./pages/ResumeBuilder";
 import JsonFormatter from "./pages/JsonFormatter";
 import HashtagGenerator from "./pages/HashtagGenerator";
@@ -53,6 +54,7 @@ function App() {
         <Route path="/tools/lorem-ipsum-generator" element={<LoremIpsumGenerator />} />
         <Route path="/tools/qr-code-generator" element={<QrCodeGenerator />} />
         <Route path="/tools/invoice-generator" element={<InvoiceGenerator />} />
+        <Route path="/tools/salary-slip-generator" element={<SalarySlipGenerator />} />
         <Route path="/tools/resume-builder" element={<ResumeBuilder />} />
         <Route path="/tools/json-formatter" element={<JsonFormatter />} />
         <Route path="/tools/hashtag-generator" element={<HashtagGenerator />} />
