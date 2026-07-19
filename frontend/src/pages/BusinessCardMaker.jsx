@@ -17,13 +17,28 @@ const labelClass = "block text-xs font-medium text-slate-500 dark:text-slate-400
 
 const OFFSCREEN_STYLE = { position: "absolute", left: -9999, top: 0, pointerEvents: "none" };
 
+const SAMPLE_FIELDS = {
+  fullName: "Your Name",
+  jobTitle: "Job Title",
+  company: "Company Name",
+  phone: "+91 98765 43210",
+  email: "you@email.com",
+  website: "yourwebsite.com",
+  address: "",
+  logoDataUrl: "",
+};
+
+const THUMB_WIDTH = 260;
+
 export default function BusinessCardMaker() {
   const fileInputRef = useRef(null);
   const frontRef = useRef(null);
   const backRef = useRef(null);
+  const thumbRefs = useRef({});
 
   const [templateId, setTemplateId] = useState(businessCardTemplates[0].id);
   const [side, setSide] = useState("front");
+  const [templateThumbs, setTemplateThumbs] = useState({});
   const [fields, setFields] = useState({
     fullName: "",
     jobTitle: "",
@@ -56,6 +71,32 @@ export default function BusinessCardMaker() {
       .then(setQrDataUrl)
       .catch(() => setQrDataUrl(""));
   }, [backFields.showQr, fields.website, fields.email, fields.phone]);
+
+  // Render every template once with sample data and bake it to a static
+  // image for the picker grid, instead of live-rendering the HTML at a
+  // tiny size (which is what caused decorative elements to visually
+  // overlap neighboring cards at small widths).
+  useEffect(() => {
+    let cancelled = false;
+    async function generateThumbnails() {
+      const results = {};
+      for (const t of businessCardTemplates) {
+        const node = thumbRefs.current[t.id];
+        if (!node) continue;
+        try {
+          const canvas = await html2canvas(node, { scale: 2, backgroundColor: null, useCORS: true });
+          results[t.id] = canvas.toDataURL("image/png");
+        } catch {
+          // fall back to live render for this template if capture fails
+        }
+      }
+      if (!cancelled) setTemplateThumbs(results);
+    }
+    generateThumbnails();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleLogoChange = (e) => {
     const file = e.target.files?.[0];
@@ -130,9 +171,18 @@ export default function BusinessCardMaker() {
                     : "border-transparent hover:border-slate-300 dark:hover:border-slate-700"
                 }`}
               >
-                <div className="pointer-events-none">
-                  <BusinessCardPreview template={t} fields={fields} width={130} />
-                </div>
+                {templateThumbs[t.id] ? (
+                  <img
+                    src={templateThumbs[t.id]}
+                    alt={t.name}
+                    className="w-full rounded-lg pointer-events-none"
+                    style={{ aspectRatio: 1.75 }}
+                  />
+                ) : (
+                  <div className="pointer-events-none">
+                    <BusinessCardPreview template={t} fields={SAMPLE_FIELDS} width={130} />
+                  </div>
+                )}
                 <p className="mt-2 text-xs font-medium text-center truncate">{t.name}</p>
               </button>
             ))}
@@ -281,6 +331,15 @@ export default function BusinessCardMaker() {
       </div>
       <div style={OFFSCREEN_STYLE} aria-hidden="true">
         <BusinessCardPreview ref={backRef} template={template} fields={fields} backFields={backFields} qrDataUrl={qrDataUrl} side="back" width={1050} />
+      </div>
+
+      {/* Off-screen source nodes used once to bake static picker thumbnails */}
+      <div style={OFFSCREEN_STYLE} aria-hidden="true">
+        {businessCardTemplates.map((t) => (
+          <div key={t.id} ref={(el) => (thumbRefs.current[t.id] = el)}>
+            <BusinessCardPreview template={t} fields={SAMPLE_FIELDS} width={THUMB_WIDTH} />
+          </div>
+        ))}
       </div>
     </ToolPageShell>
   );

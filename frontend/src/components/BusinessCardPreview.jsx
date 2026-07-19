@@ -92,6 +92,8 @@ const BackSide = forwardRef(function BackSide({ t, fields, backFields, width, he
         fontFamily: font,
         boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
         borderRadius: width * 0.017,
+        transform: "translateZ(0)",
+        isolation: "isolate",
         background: bg,
         color: text,
         display: "flex",
@@ -135,6 +137,10 @@ const BusinessCardPreview = forwardRef(function BusinessCardPreview(
     fontFamily: font,
     boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
     borderRadius: width * 0.017,
+    // Forces its own compositing layer — without this, Chromium can fail
+    // to clip absolutely-positioned children at the rounded corners.
+    transform: "translateZ(0)",
+    isolation: "isolate",
   };
 
   if (side === "back") {
