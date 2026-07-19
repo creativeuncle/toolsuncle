@@ -16,6 +16,7 @@ import {
   SquarePlay,
   BadgePercent,
   ReceiptIndianRupee,
+  IdCard,
 } from "lucide-react";
 
 export const tools = [
@@ -148,6 +149,16 @@ export const tools = [
     color: "from-blue-600 to-cyan-500",
     category: "Career Tools",
     categorySlug: "career-tools",
+  },
+  {
+    id: "business-card-maker",
+    name: "Business Card Maker",
+    description: "Pick a template and design a professional business card with your details, then download it.",
+    icon: IdCard,
+    path: "/tools/business-card-maker",
+    color: "from-violet-600 to-fuchsia-500",
+    category: "Design Tools",
+    categorySlug: "design-tools",
   },
   {
     id: "json-formatter",

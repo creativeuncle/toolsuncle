@@ -15,6 +15,7 @@ import QrCodeGenerator from "./pages/QrCodeGenerator";
 import InvoiceGenerator from "./pages/InvoiceGenerator";
 import SalarySlipGenerator from "./pages/SalarySlipGenerator";
 import ResumeBuilder from "./pages/ResumeBuilder";
+import BusinessCardMaker from "./pages/BusinessCardMaker";
 import JsonFormatter from "./pages/JsonFormatter";
 import HashtagGenerator from "./pages/HashtagGenerator";
 import YoutubeMoneyCalculator from "./pages/YoutubeMoneyCalculator";
@@ -56,6 +57,7 @@ function App() {
         <Route path="/tools/invoice-generator" element={<InvoiceGenerator />} />
         <Route path="/tools/salary-slip-generator" element={<SalarySlipGenerator />} />
         <Route path="/tools/resume-builder" element={<ResumeBuilder />} />
+        <Route path="/tools/business-card-maker" element={<BusinessCardMaker />} />
         <Route path="/tools/json-formatter" element={<JsonFormatter />} />
         <Route path="/tools/hashtag-generator" element={<HashtagGenerator />} />
         <Route path="/tools/youtube-money-calculator" element={<YoutubeMoneyCalculator />} />
