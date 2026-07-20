@@ -49,13 +49,13 @@ export default function PdfPasswordRemover() {
       />
 
       <div className="mt-4">
-        <label className={labelClass}>PDF Password</label>
+        <label className={labelClass}>PDF Password (leave blank if the PDF opens without one)</label>
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter the current password"
+            placeholder="Only needed if a password is required to open the file"
             className={`${inputClass} pr-10`}
           />
           <button
@@ -67,14 +67,16 @@ export default function PdfPasswordRemover() {
           </button>
         </div>
         <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500">
-          You need to know the PDF's current password — this tool removes it, it doesn't crack unknown passwords.
+          Works two ways: (1) PDF opens fine but printing/editing/copying is restricted — leave the password blank
+          and we'll strip those restrictions. (2) PDF asks for a password before it even opens — enter that
+          password to remove it. This tool can't recover or crack a password you don't know.
         </p>
       </div>
 
       {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
 
       <div className="mt-6 flex justify-end">
-        <Button onClick={handleUnlock} loading={loading} disabled={files.length === 0 || !password}>
+        <Button onClick={handleUnlock} loading={loading} disabled={files.length === 0}>
           Remove Password
         </Button>
       </div>

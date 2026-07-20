@@ -54,7 +54,7 @@ export const tools = [
   {
     id: "pdf-password-remover",
     name: "PDF Password Remover",
-    description: "Remove a known password from a protected PDF so it opens without one.",
+    description: "Strip print/edit restrictions from a PDF, or remove a known open-password.",
     icon: Unlock,
     path: "/tools/pdf-password-remover",
     color: "from-orange-500 to-amber-400",
