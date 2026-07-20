@@ -18,6 +18,7 @@ import {
   ReceiptIndianRupee,
   IdCard,
   Cake,
+  MoonStar,
 } from "lucide-react";
 
 export const tools = [
@@ -210,5 +211,15 @@ export const tools = [
     color: "from-amber-500 to-orange-400",
     category: "Utilities",
     categorySlug: "utilities",
+  },
+  {
+    id: "kundli",
+    name: "Free Online Kundli",
+    description: "Generate a Vedic birth chart with planet positions, dosha, dasha, and remedies.",
+    icon: MoonStar,
+    path: "/tools/kundli",
+    color: "from-amber-500 to-yellow-400",
+    category: "Astrology",
+    categorySlug: "astrology",
   },
 ];
