@@ -20,6 +20,7 @@ import JsonFormatter from "./pages/JsonFormatter";
 import HashtagGenerator from "./pages/HashtagGenerator";
 import YoutubeMoneyCalculator from "./pages/YoutubeMoneyCalculator";
 import GstCalculator from "./pages/GstCalculator";
+import AgeCalculator from "./pages/AgeCalculator";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogCategory from "./pages/BlogCategory";
@@ -62,6 +63,7 @@ function App() {
         <Route path="/tools/hashtag-generator" element={<HashtagGenerator />} />
         <Route path="/tools/youtube-money-calculator" element={<YoutubeMoneyCalculator />} />
         <Route path="/tools/gst-calculator" element={<GstCalculator />} />
+        <Route path="/tools/age-calculator" element={<AgeCalculator />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/category/:slug" element={<BlogCategory />} />
         <Route path="/blog/:slug" element={<BlogPost />} />

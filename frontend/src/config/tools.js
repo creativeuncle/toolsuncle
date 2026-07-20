@@ -17,6 +17,7 @@ import {
   BadgePercent,
   ReceiptIndianRupee,
   IdCard,
+  Cake,
 } from "lucide-react";
 
 export const tools = [
@@ -199,5 +200,15 @@ export const tools = [
     color: "from-green-600 to-emerald-500",
     category: "Business Tools",
     categorySlug: "business-tools",
+  },
+  {
+    id: "age-calculator",
+    name: "Age Calculator",
+    description: "Your exact age, planetary ages, life stats, milestones, and Indian govt job eligibility.",
+    icon: Cake,
+    path: "/tools/age-calculator",
+    color: "from-amber-500 to-orange-400",
+    category: "Utilities",
+    categorySlug: "utilities",
   },
 ];
