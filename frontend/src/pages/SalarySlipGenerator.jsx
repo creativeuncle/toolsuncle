@@ -425,7 +425,7 @@ export default function SalarySlipGenerator() {
           title="Working Details"
           right={<AddButton onClick={addWorkingField}>Add field</AddButton>}
         >
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-5">
             {workingFields.map((field) => (
               <RemovableField
                 key={field.id}
