@@ -72,10 +72,31 @@ const DEFAULT_DEDUCTIONS = [
   { key: "canteen", label: "Canteen / Food" },
 ].map((f) => ({ id: uid(), value: "", custom: false, ...f }));
 
+const ADD_BUTTON_COLORS = {
+  amber:
+    "border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-500/20",
+  emerald:
+    "border-emerald-200 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-500/20",
+  red: "border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20",
+};
+
+function AddButton({ onClick, children, color = "amber", className = "" }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${ADD_BUTTON_COLORS[color]} ${className}`}
+    >
+      <Plus size={14} />
+      {children}
+    </button>
+  );
+}
+
 function SectionCard({ icon: Icon, iconColor, title, right, children }) {
   return (
     <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
-      <div className="flex items-center justify-between mb-5">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
         <h3 className="flex items-center gap-2 font-semibold">
           <Icon size={18} className={iconColor} />
           {title}
@@ -87,10 +108,23 @@ function SectionCard({ icon: Icon, iconColor, title, right, children }) {
   );
 }
 
+function RemoveButton({ onRemove, label }) {
+  return (
+    <button
+      type="button"
+      onClick={onRemove}
+      title={`Remove ${label}`}
+      className="shrink-0 flex items-center justify-center w-5 h-5 rounded-full text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 transition-colors"
+    >
+      <X size={13} />
+    </button>
+  );
+}
+
 function RemovableField({ field, onChange, onRemove }) {
   return (
     <div>
-      <div className="flex items-center justify-between mb-1">
+      <div className="flex items-start justify-between gap-2 mb-1 min-h-[1.5rem]">
         {field.custom ? (
           <input
             value={field.label}
@@ -99,16 +133,12 @@ function RemovableField({ field, onChange, onRemove }) {
             className="text-xs font-medium text-slate-500 dark:text-slate-400 bg-transparent focus:outline-none border-b border-dashed border-slate-300 dark:border-slate-700"
           />
         ) : (
-          <label className="text-xs font-medium text-slate-500 dark:text-slate-400">
+          <label className="text-xs font-medium text-slate-500 dark:text-slate-400 leading-tight">
             {field.label}
             {field.required && " *"}
           </label>
         )}
-        {!field.required && (
-          <button type="button" onClick={onRemove} className="text-slate-400 hover:text-red-500">
-            <X size={14} />
-          </button>
-        )}
+        {!field.required && <RemoveButton onRemove={onRemove} label={field.label || "field"} />}
       </div>
       <input
         value={field.value}
@@ -123,7 +153,7 @@ function RemovableField({ field, onChange, onRemove }) {
 function MoneyRow({ row, currencySymbol, onChange, onRemove, disabled, computedValue }) {
   return (
     <div>
-      <div className="flex items-center justify-between mb-1">
+      <div className="flex items-start justify-between gap-2 mb-1 min-h-[1.5rem]">
         {row.custom ? (
           <input
             value={row.label}
@@ -132,16 +162,12 @@ function MoneyRow({ row, currencySymbol, onChange, onRemove, disabled, computedV
             className="text-xs font-medium text-slate-500 dark:text-slate-400 bg-transparent focus:outline-none border-b border-dashed border-slate-300 dark:border-slate-700"
           />
         ) : (
-          <label className="text-xs font-medium text-slate-500 dark:text-slate-400">
+          <label className="text-xs font-medium text-slate-500 dark:text-slate-400 leading-tight">
             {row.label}
             {row.required && " *"}
           </label>
         )}
-        {!row.required && (
-          <button type="button" onClick={onRemove} className="text-slate-400 hover:text-red-500">
-            <X size={14} />
-          </button>
-        )}
+        {!row.required && <RemoveButton onRemove={onRemove} label={row.label || "item"} />}
       </div>
       <div className="relative">
         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">{currencySymbol}</span>
@@ -379,18 +405,9 @@ export default function SalarySlipGenerator() {
           icon={User}
           iconColor="text-amber-500"
           title="Employee Details"
-          right={
-            <button
-              type="button"
-              onClick={addEmployeeField}
-              className="flex items-center gap-1 text-sm font-medium text-amber-600 dark:text-amber-400"
-            >
-              <Plus size={14} />
-              Add another field
-            </button>
-          }
+          right={<AddButton onClick={addEmployeeField}>Add another field</AddButton>}
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-5">
             {employeeFields.map((field) => (
               <RemovableField
                 key={field.id}
@@ -406,18 +423,9 @@ export default function SalarySlipGenerator() {
           icon={Calendar}
           iconColor="text-amber-500"
           title="Working Details"
-          right={
-            <button
-              type="button"
-              onClick={addWorkingField}
-              className="flex items-center gap-1 text-sm font-medium text-amber-600 dark:text-amber-400"
-            >
-              <Plus size={14} />
-              Add field
-            </button>
-          }
+          right={<AddButton onClick={addWorkingField}>Add field</AddButton>}
         >
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-5">
             {workingFields.map((field) => (
               <RemovableField
                 key={field.id}
@@ -438,7 +446,7 @@ export default function SalarySlipGenerator() {
           iconColor="text-emerald-500"
           title="Earnings (₹)"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-5">
             {earnings.map((row) => (
               <MoneyRow
                 key={row.id}
@@ -449,14 +457,9 @@ export default function SalarySlipGenerator() {
               />
             ))}
           </div>
-          <button
-            type="button"
-            onClick={addEarning}
-            className="flex items-center gap-1.5 text-sm font-medium text-emerald-600 dark:text-emerald-400 mt-4"
-          >
-            <Plus size={16} />
+          <AddButton onClick={addEarning} color="emerald" className="mt-4">
             Add Earning
-          </button>
+          </AddButton>
 
           <div className="border-t border-slate-200 dark:border-slate-800 mt-5 pt-4 space-y-1.5">
             <div className="flex justify-between text-sm">
@@ -477,7 +480,7 @@ export default function SalarySlipGenerator() {
         </SectionCard>
 
         <SectionCard icon={Landmark} iconColor="text-red-500" title="Deductions (₹)">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-5">
             {deductions.map((row) => {
               const isAuto = row.auto && row.autoCalc;
               const computed = row.key === "pf" ? totals.pfComputed : row.key === "esi" ? totals.esiComputed : 0;
@@ -494,14 +497,9 @@ export default function SalarySlipGenerator() {
               );
             })}
           </div>
-          <button
-            type="button"
-            onClick={addDeduction}
-            className="flex items-center gap-1.5 text-sm font-medium text-red-600 dark:text-red-400 mt-4"
-          >
-            <Plus size={16} />
+          <AddButton onClick={addDeduction} color="red" className="mt-4">
             Add Deduction
-          </button>
+          </AddButton>
 
           <div className="border-t border-slate-200 dark:border-slate-800 mt-5 pt-4 flex justify-between font-semibold">
             <span>Gross Deductions</span>
