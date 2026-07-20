@@ -17,6 +17,7 @@ import {
   BadgePercent,
   ReceiptIndianRupee,
   IdCard,
+  Unlock,
 } from "lucide-react";
 
 export const tools = [
@@ -47,6 +48,16 @@ export const tools = [
     icon: Layers,
     path: "/tools/merge-pdf",
     color: "from-violet-500 to-purple-400",
+    category: "PDF Tools",
+    categorySlug: "pdf-tools",
+  },
+  {
+    id: "pdf-password-remover",
+    name: "PDF Password Remover",
+    description: "Remove a known password from a protected PDF so it opens without one.",
+    icon: Unlock,
+    path: "/tools/pdf-password-remover",
+    color: "from-orange-500 to-amber-400",
     category: "PDF Tools",
     categorySlug: "pdf-tools",
   },

@@ -10,6 +10,7 @@ import compressImageRouter from "./routes/compressImage.js";
 import heicToJpgRouter from "./routes/heicToJpg.js";
 import aiPromptGeneratorRouter from "./routes/aiPromptGenerator.js";
 import youtubeChannelRouter from "./routes/youtubeChannel.js";
+import pdfPasswordRemoverRouter from "./routes/pdfPasswordRemover.js";
 import postsRouter from "./routes/posts.js";
 import adminAuthRouter from "./routes/admin/auth.js";
 import adminPostsRouter from "./routes/admin/posts.js";
@@ -32,6 +33,7 @@ app.use("/api/tools/compress-image", compressImageRouter);
 app.use("/api/tools/heic-to-jpg", heicToJpgRouter);
 app.use("/api/tools/ai-prompt-generator", aiPromptGeneratorRouter);
 app.use("/api/tools/youtube-channel", youtubeChannelRouter);
+app.use("/api/tools/pdf-password-remover", pdfPasswordRemoverRouter);
 
 app.use("/api/posts", postsRouter);
 
