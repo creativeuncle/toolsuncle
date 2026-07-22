@@ -1,4 +1,6 @@
-export default function ToolPageShell({ icon: Icon, color, title, description, children }) {
+import FeedbackForm from "./FeedbackForm";
+
+export default function ToolPageShell({ icon: Icon, color, title, description, children, toolId }) {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="flex items-center gap-4 mb-8">
@@ -16,6 +18,8 @@ export default function ToolPageShell({ icon: Icon, color, title, description, c
       <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8">
         {children}
       </div>
+
+      <FeedbackForm toolId={toolId} toolName={title} />
     </div>
   );
 }

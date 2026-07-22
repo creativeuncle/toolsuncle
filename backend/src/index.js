@@ -11,10 +11,12 @@ import heicToJpgRouter from "./routes/heicToJpg.js";
 import aiPromptGeneratorRouter from "./routes/aiPromptGenerator.js";
 import youtubeChannelRouter from "./routes/youtubeChannel.js";
 import postsRouter from "./routes/posts.js";
+import feedbackRouter from "./routes/feedback.js";
 import adminAuthRouter from "./routes/admin/auth.js";
 import adminPostsRouter from "./routes/admin/posts.js";
 import adminCategoriesRouter from "./routes/admin/categories.js";
 import adminMediaRouter from "./routes/admin/media.js";
+import adminFeedbackRouter from "./routes/admin/feedback.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -34,11 +36,13 @@ app.use("/api/tools/ai-prompt-generator", aiPromptGeneratorRouter);
 app.use("/api/tools/youtube-channel", youtubeChannelRouter);
 
 app.use("/api/posts", postsRouter);
+app.use("/api/feedback", feedbackRouter);
 
 app.use("/api/admin/auth", adminAuthRouter);
 app.use("/api/admin/posts", adminPostsRouter);
 app.use("/api/admin/categories", adminCategoriesRouter);
 app.use("/api/admin/media", adminMediaRouter);
+app.use("/api/admin/feedback", adminFeedbackRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: "Not found" });

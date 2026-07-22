@@ -1,10 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FileText, Tag, LogOut } from "lucide-react";
+import { FileText, Tag, LogOut, MessageSquareText } from "lucide-react";
 import { clearAdminToken } from "../adminApi";
 
 const navItems = [
   { label: "Blogs", path: "/admin/blogs", icon: FileText },
   { label: "Categories", path: "/admin/categories", icon: Tag },
+  { label: "Feedback", path: "/admin/feedback", icon: MessageSquareText },
 ];
 
 export default function AdminLayout({ children }) {

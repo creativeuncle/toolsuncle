@@ -30,6 +30,8 @@ import AdminBlogs from "./admin/pages/AdminBlogs";
 import AdminAddPost from "./admin/pages/AdminAddPost";
 import AdminEditPost from "./admin/pages/AdminEditPost";
 import AdminCategories from "./admin/pages/AdminCategories";
+import AdminFeedback from "./admin/pages/AdminFeedback";
+import AdminFeedbackDetail from "./admin/pages/AdminFeedbackDetail";
 import RequireAdmin from "./admin/RequireAdmin";
 
 function PublicLayout() {
@@ -102,6 +104,22 @@ function App() {
         element={
           <RequireAdmin>
             <AdminCategories />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/admin/feedback"
+        element={
+          <RequireAdmin>
+            <AdminFeedback />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/admin/feedback/:id"
+        element={
+          <RequireAdmin>
+            <AdminFeedbackDetail />
           </RequireAdmin>
         }
       />
