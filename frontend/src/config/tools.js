@@ -19,6 +19,7 @@ import {
   IdCard,
   Cake,
   MoonStar,
+  Globe,
 } from "lucide-react";
 
 export const tools = [
@@ -221,5 +222,15 @@ export const tools = [
     color: "from-amber-500 to-yellow-400",
     category: "Astrology",
     categorySlug: "astrology",
+  },
+  {
+    id: "domain-name-search",
+    name: "Domain Name Search",
+    description: "Search a keyword across 40+ domain extensions and see which ones are available.",
+    icon: Globe,
+    path: "/tools/domain-name-search",
+    color: "from-cyan-600 to-blue-500",
+    category: "Utilities",
+    categorySlug: "utilities",
   },
 ];
