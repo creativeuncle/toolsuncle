@@ -20,6 +20,7 @@ import {
   Cake,
   MoonStar,
   Globe,
+  Keyboard,
 } from "lucide-react";
 
 export const tools = [
@@ -232,5 +233,15 @@ export const tools = [
     color: "from-cyan-600 to-blue-500",
     category: "Utilities",
     categorySlug: "utilities",
+  },
+  {
+    id: "english-to-hindi-typing",
+    name: "English to Hindi Typing",
+    description: "Type in English (Roman letters) and get accurate Hindi (Devanagari) text instantly.",
+    icon: Keyboard,
+    path: "/tools/english-to-hindi-typing",
+    color: "from-orange-500 to-rose-400",
+    category: "Text Tools",
+    categorySlug: "text-tools",
   },
 ];
