@@ -22,6 +22,7 @@ import {
   Globe,
   Keyboard,
   CaseSensitive,
+  Smile,
 } from "lucide-react";
 
 export const tools = [
@@ -254,5 +255,15 @@ export const tools = [
     color: "from-violet-500 to-indigo-400",
     category: "Text Tools",
     categorySlug: "text-tools",
+  },
+  {
+    id: "emoji-copy",
+    name: "Emoji Copy",
+    description: "Browse or search every emoji by category and copy it with one click.",
+    icon: Smile,
+    path: "/tools/emoji-copy",
+    color: "from-yellow-400 to-amber-500",
+    category: "Utilities",
+    categorySlug: "utilities",
   },
 ];
