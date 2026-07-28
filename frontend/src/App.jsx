@@ -24,6 +24,7 @@ import AgeCalculator from "./pages/AgeCalculator";
 import Kundli from "./pages/Kundli";
 import DomainNameSearch from "./pages/DomainNameSearch";
 import EnglishToHindiTyping from "./pages/EnglishToHindiTyping";
+import ConvertCase from "./pages/ConvertCase";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogCategory from "./pages/BlogCategory";
@@ -72,6 +73,7 @@ function App() {
         <Route path="/tools/kundli" element={<Kundli />} />
         <Route path="/tools/domain-name-search" element={<DomainNameSearch />} />
         <Route path="/tools/english-to-hindi-typing" element={<EnglishToHindiTyping />} />
+        <Route path="/tools/convert-case" element={<ConvertCase />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/category/:slug" element={<BlogCategory />} />
         <Route path="/blog/:slug" element={<BlogPost />} />

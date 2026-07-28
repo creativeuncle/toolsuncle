@@ -21,6 +21,7 @@ import {
   MoonStar,
   Globe,
   Keyboard,
+  CaseSensitive,
 } from "lucide-react";
 
 export const tools = [
@@ -241,6 +242,16 @@ export const tools = [
     icon: Keyboard,
     path: "/tools/english-to-hindi-typing",
     color: "from-orange-500 to-rose-400",
+    category: "Text Tools",
+    categorySlug: "text-tools",
+  },
+  {
+    id: "convert-case",
+    name: "Convert Case",
+    description: "Switch text between sentence case, UPPER CASE, Title Case, and more in one click.",
+    icon: CaseSensitive,
+    path: "/tools/convert-case",
+    color: "from-violet-500 to-indigo-400",
     category: "Text Tools",
     categorySlug: "text-tools",
   },
