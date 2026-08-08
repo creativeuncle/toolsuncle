@@ -23,6 +23,7 @@ import {
   Keyboard,
   CaseSensitive,
   Smile,
+  Percent,
 } from "lucide-react";
 
 export const tools = [
@@ -263,6 +264,16 @@ export const tools = [
     icon: Smile,
     path: "/tools/emoji-copy",
     color: "from-yellow-400 to-amber-500",
+    category: "Utilities",
+    categorySlug: "utilities",
+  },
+  {
+    id: "percentage-calculator",
+    name: "Percentage Calculator",
+    description: "Find percentages, percentage change, and the whole number from a part — all in one tool.",
+    icon: Percent,
+    path: "/tools/percentage-calculator",
+    color: "from-cyan-500 to-teal-400",
     category: "Utilities",
     categorySlug: "utilities",
   },

@@ -26,6 +26,7 @@ import DomainNameSearch from "./pages/DomainNameSearch";
 import EnglishToHindiTyping from "./pages/EnglishToHindiTyping";
 import ConvertCase from "./pages/ConvertCase";
 import EmojiCopy from "./pages/EmojiCopy";
+import PercentageCalculator from "./pages/PercentageCalculator";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogCategory from "./pages/BlogCategory";
@@ -76,6 +77,7 @@ function App() {
         <Route path="/tools/english-to-hindi-typing" element={<EnglishToHindiTyping />} />
         <Route path="/tools/convert-case" element={<ConvertCase />} />
         <Route path="/tools/emoji-copy" element={<EmojiCopy />} />
+        <Route path="/tools/percentage-calculator" element={<PercentageCalculator />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/category/:slug" element={<BlogCategory />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
