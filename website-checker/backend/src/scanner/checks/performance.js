@@ -4,7 +4,7 @@ const LARGE_IMAGE_BYTES = 250 * 1024;
 
 export function performanceCheck(ctx) {
   const issues = [];
-  const { page, headers, timeMs, imageStatuses } = ctx;
+  const { page, headers, timeMs, imageStatuses, browser } = ctx;
 
   if (timeMs > 2000) {
     issues.push(
@@ -71,10 +71,45 @@ export function performanceCheck(ctx) {
     issues.push(issue({ title: "Compression", description: "Response is not served with gzip/Brotli compression (no Content-Encoding header).", severity: "medium" }));
   }
 
+  const comingSoon = ["Waterfall / resource timeline", "INP (needs real user interaction, not measurable on an automated scan)"];
+
+  if (browser?.ok) {
+    const { lcp, cls, fcp } = browser.webVitals;
+    if (lcp != null && lcp > 2500) {
+      issues.push(
+        issue({
+          title: "Slow Largest Contentful Paint (LCP)",
+          description: `LCP is ${(lcp / 1000).toFixed(2)}s; Google's "good" threshold is under 2.5s.`,
+          severity: lcp > 4000 ? "critical" : "medium",
+        })
+      );
+    }
+    if (cls != null && cls > 0.1) {
+      issues.push(
+        issue({
+          title: "Layout shift (CLS)",
+          description: `Cumulative Layout Shift is ${cls.toFixed(3)}; Google's "good" threshold is under 0.1.`,
+          severity: cls > 0.25 ? "critical" : "medium",
+        })
+      );
+    }
+    if (fcp != null && fcp > 1800) {
+      issues.push(
+        issue({
+          title: "Slow First Contentful Paint (FCP)",
+          description: `FCP is ${(fcp / 1000).toFixed(2)}s; Google's "good" threshold is under 1.8s.`,
+          severity: "low",
+        })
+      );
+    }
+  } else {
+    comingSoon.unshift("Core Web Vitals (LCP, CLS, FCP) — browser check unavailable for this scan");
+  }
+
   return {
     id: "performance",
     name: "Performance",
     issues,
-    comingSoon: ["Core Web Vitals (LCP, CLS, INP) via real browser measurement", "Waterfall / resource timeline"],
+    comingSoon,
   };
 }

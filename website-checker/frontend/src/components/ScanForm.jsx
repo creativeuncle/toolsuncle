@@ -4,11 +4,12 @@ import { Globe02Icon, Search01Icon, Loading03Icon } from "@hugeicons/core-free-i
 
 export default function ScanForm({ onScan, loading, size = "lg" }) {
   const [url, setUrl] = useState("");
+  const [deep, setDeep] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!url.trim() || loading) return;
-    onScan(url.trim());
+    onScan(url.trim(), deep);
   };
 
   const isCompact = size === "sm";
@@ -46,6 +47,16 @@ export default function ScanForm({ onScan, loading, size = "lg" }) {
           {loading ? "Scanning…" : "Scan free"}
         </button>
       </div>
+
+      <label className="mt-3 flex items-center justify-center gap-2 text-xs text-[#8a9a8a] cursor-pointer select-none">
+        <input
+          type="checkbox"
+          checked={deep}
+          onChange={(e) => setDeep(e.target.checked)}
+          className="w-3.5 h-3.5 rounded accent-[#7cff6b]"
+        />
+        Deep scan — browser checks + full-site crawl (slower, ~15-30s)
+      </label>
     </form>
   );
 }

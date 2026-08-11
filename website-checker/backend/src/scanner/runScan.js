@@ -1,6 +1,8 @@
 import { fetchText, headOrGetStatus } from "./fetchUrl.js";
 import { analyzePage } from "./analyzePage.js";
 import { scoreFromIssues } from "./issue.js";
+import { runBrowserChecks } from "./browserScan.js";
+import { crawlSite } from "./crawlSite.js";
 import { securityCheck } from "./checks/security.js";
 import { seoCheck } from "./checks/seo.js";
 import { aeoCheck } from "./checks/aeo.js";
@@ -12,6 +14,7 @@ import { designCheck } from "./checks/design.js";
 
 const ADMIN_PATHS = ["/wp-admin/", "/admin/", "/administrator/"];
 const MAX_LINKS_TO_CHECK = 15;
+const MAX_LINKS_TO_CHECK_DEEP = 30;
 const MAX_IMAGES_TO_CHECK = 20;
 
 export function normalizeUrl(input) {
@@ -32,7 +35,8 @@ async function probeContentLength(url) {
   return { ok: true, status: result.status, contentLength: len ? Number(len) : null };
 }
 
-export async function runScan(rawUrl) {
+export async function runScan(rawUrl, options = {}) {
+  const deep = Boolean(options.deep);
   const targetUrl = normalizeUrl(rawUrl);
   const mainFetch = await fetchText(targetUrl, { timeoutMs: 15000 });
 
@@ -69,14 +73,26 @@ export async function runScan(rawUrl) {
     admin: adminHit ? { ok: true, status: 200, path: ADMIN_PATHS[adminProbes.indexOf(adminHit)] } : { ok: false },
   };
 
-  const internalLinks = dedupe(page.links.filter((l) => l.isInternal && l.href && l.href !== mainFetch.finalUrl).map((l) => l.href)).slice(
-    0,
-    MAX_LINKS_TO_CHECK
-  );
+  // Deep scan: crawl a handful of internal pages first, so the broken-link
+  // sweep and duplicate-title check cover more than just the homepage.
+  let crawl = null;
+  if (deep) {
+    crawl = await crawlSite(mainFetch.finalUrl, page).catch(() => null);
+  }
+
+  const linkPool = crawl
+    ? dedupe(crawl.allInternalLinks.filter((u) => u !== mainFetch.finalUrl))
+    : dedupe(page.links.filter((l) => l.isInternal && l.href && l.href !== mainFetch.finalUrl).map((l) => l.href));
+  const internalLinks = linkPool.slice(0, deep ? MAX_LINKS_TO_CHECK_DEEP : MAX_LINKS_TO_CHECK);
   const linkStatuses = await Promise.all(internalLinks.map((url) => headOrGetStatus(url).then((r) => ({ url, ...r }))));
 
   const imageUrls = dedupe(page.images.map((i) => i.src)).slice(0, MAX_IMAGES_TO_CHECK);
   const imageStatuses = await Promise.all(imageUrls.map((url) => probeContentLength(url).then((r) => ({ url, ...r }))));
+
+  // Browser-based checks (console/JS errors, Core Web Vitals, contrast,
+  // keyboard focus, overlap/tap-target sizing) only run for a deep scan —
+  // launching Chromium and rendering the page adds real latency.
+  const browser = deep ? await runBrowserChecks(mainFetch.finalUrl).catch((err) => ({ ok: false, error: err.message })) : null;
 
   const ctx = {
     page,
@@ -91,7 +107,8 @@ export async function runScan(rawUrl) {
     probes,
     linkStatuses,
     imageStatuses,
-    duplicateTitles: false,
+    browser,
+    duplicateTitles: crawl ? crawl.duplicateTitleGroups.length > 0 : false,
   };
 
   const categories = [securityCheck(ctx), seoCheck(ctx), aeoCheck(ctx), performanceCheck(ctx), accessibilityCheck(ctx), completenessCheck(ctx), technicalCheck(ctx), designCheck(ctx)].map(
@@ -106,6 +123,8 @@ export async function runScan(rawUrl) {
     finalUrl: mainFetch.finalUrl,
     scannedAt: new Date().toISOString(),
     loadTimeMs: mainFetch.timeMs,
+    deep,
+    pagesScanned: crawl?.pagesVisited ?? 1,
     totalIssues,
     overallScore,
     categories,

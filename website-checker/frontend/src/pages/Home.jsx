@@ -8,7 +8,7 @@ import {
   UniversalAccessIcon,
 } from "@hugeicons/core-free-icons";
 import ScanForm from "../components/ScanForm";
-import CategoryCard from "../components/CategoryCard";
+import ResultsView from "../components/ResultsView";
 import { api, extractErrorMessage } from "../config/api";
 
 const FEATURES = [
@@ -25,12 +25,12 @@ export default function Home() {
   const [error, setError] = useState("");
   const resultsRef = useRef(null);
 
-  const handleScan = async (url) => {
+  const handleScan = async (url, deep) => {
     setLoading(true);
     setError("");
     setResult(null);
     try {
-      const { data } = await api.post("/scan", { url });
+      const { data } = await api.post("/scan", { url, deep });
       setResult(data);
     } catch (err) {
       setError(await extractErrorMessage(err));
@@ -85,27 +85,7 @@ export default function Home() {
         </div>
       )}
 
-      {result && (
-        <section className="relative max-w-6xl mx-auto px-6 pb-24">
-          <div className="mb-8">
-            <p className="text-sm text-[#6b7a6b] mb-1">Results for</p>
-            <div className="flex flex-wrap items-end gap-4">
-              <h2 className="text-2xl sm:text-3xl font-bold text-white break-all">
-                {new URL(result.finalUrl).hostname}
-              </h2>
-              <span className="text-sm text-[#6b7a6b]">
-                {result.totalIssues} issues found · overall score {result.overallScore}/100
-              </span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {result.categories.map((cat) => (
-              <CategoryCard key={cat.id} category={cat} />
-            ))}
-          </div>
-        </section>
-      )}
+      {result && <ResultsView result={result} />}
 
       {!result && !loading && (
         <section className="relative max-w-6xl mx-auto px-6 pb-24">

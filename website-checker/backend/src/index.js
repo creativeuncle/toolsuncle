@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import scanRouter from "./routes/scan.js";
+import { closeBrowser } from "./scanner/browserScan.js";
 
 const app = express();
 const PORT = process.env.PORT || 5501;
@@ -25,3 +26,10 @@ app.use((err, req, res, next) => {
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`website-checker backend running on http://localhost:${PORT}`);
 });
+
+async function shutdown() {
+  await closeBrowser();
+  process.exit(0);
+}
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);

@@ -2,7 +2,7 @@ import { issue } from "../issue.js";
 
 export function accessibilityCheck(ctx) {
   const issues = [];
-  const { page } = ctx;
+  const { page, browser } = ctx;
 
   const missingAlt = page.images.filter((i) => !i.hasAlt).length;
   if (missingAlt > 0) {
@@ -62,10 +62,36 @@ export function accessibilityCheck(ctx) {
     issues.push(issue({ title: "Missing HTML lang attribute", description: "The <html> tag has no lang attribute, which affects screen readers and translation tools.", severity: "low" }));
   }
 
+  const comingSoon = ["Full screen reader simulation"];
+
+  if (browser?.ok) {
+    if (browser.contrastIssues.length > 0) {
+      const sample = browser.contrastIssues[0];
+      issues.push(
+        issue({
+          title: "Low color contrast",
+          description: `${browser.contrastIssues.length} of ${browser.contrastChecked} checked text element(s) fail WCAG contrast (e.g. "${sample.text}" at ${sample.ratio}:1).`,
+          severity: "medium",
+        })
+      );
+    }
+    if (browser.keyboard.noFocusIndicator > 0) {
+      issues.push(
+        issue({
+          title: "Missing keyboard focus indicator",
+          description: `${browser.keyboard.noFocusIndicator} of ${browser.keyboard.totalFocusable} focusable element(s) show no visible outline/box-shadow when focused, making keyboard navigation hard to follow.`,
+          severity: "medium",
+        })
+      );
+    }
+  } else {
+    comingSoon.unshift("Color contrast analysis and keyboard-focus walkthrough — browser check unavailable for this scan");
+  }
+
   return {
     id: "accessibility",
     name: "Accessibility",
     issues,
-    comingSoon: ["Color contrast analysis (requires rendering)", "Full keyboard-navigation walkthrough", "Screen reader simulation"],
+    comingSoon,
   };
 }

@@ -4,7 +4,7 @@ import { issue } from "../issue.js";
 // rendering and human/AI judgement, which is a planned Phase 2 addition.
 export function designCheck(ctx) {
   const issues = [];
-  const { page, $ } = ctx;
+  const { page, $, browser } = ctx;
 
   const hasNav = $("nav").length > 0 || $('[role="navigation"]').length > 0;
   if (!hasNav) {
@@ -30,10 +30,39 @@ export function designCheck(ctx) {
     issues.push(issue({ title: "No obvious call-to-action", description: "No clear button/CTA elements were detected on the page.", severity: "low" }));
   }
 
+  const comingSoon = [
+    "UX flow and conversion-path analysis",
+    "Layout, spacing and typography consistency scoring",
+    "AI-powered visual design review (needs a vision-capable LLM API key — not yet configured)",
+  ];
+
+  if (browser?.ok) {
+    if (browser.overlappingCount > 0) {
+      issues.push(
+        issue({
+          title: "Overlapping interactive elements",
+          description: `${browser.overlappingCount} pair(s) of clickable elements visually overlap by more than half their area, which can make one of them un-clickable.`,
+          severity: "medium",
+        })
+      );
+    }
+    if (browser.tinyTapTargets > 0) {
+      issues.push(
+        issue({
+          title: "Tap targets too small for mobile",
+          description: `${browser.tinyTapTargets} of ${browser.tapTargetCount} interactive element(s) are smaller than the recommended 44x44px minimum, hard to tap accurately on a phone.`,
+          severity: "low",
+        })
+      );
+    }
+  } else {
+    comingSoon.unshift("Overlapping-element and tap-target sizing checks — browser check unavailable for this scan");
+  }
+
   return {
     id: "design",
     name: "UI/UX Design",
     issues,
-    comingSoon: ["AI-powered visual design review", "UX flow and conversion-path analysis", "Layout, spacing and typography consistency scoring"],
+    comingSoon,
   };
 }
