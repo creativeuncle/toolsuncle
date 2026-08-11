@@ -2,20 +2,26 @@ import { TECH_SIGNATURES, TECH_CATEGORY_LABELS } from "../techSignatures.js";
 import { getCertificateIssuer } from "../sslInfo.js";
 
 export async function techCheck(ctx) {
-  const { page, headers, html, origin } = ctx;
+  const { page, headers, html, origin, browser } = ctx;
 
   const cookieNames = (headers?.getSetCookie?.() || (headers?.get?.("set-cookie") ? [headers.get("set-cookie")] : []))
     .map((c) => c.split("=")[0]?.trim())
     .filter(Boolean);
 
+  // On a deep scan, prefer the post-JS-execution DOM snapshot over the raw
+  // static fetch — client-side-rendered apps (React/Vue/etc.) inject their
+  // scripts and content after load, so the static HTML alone can look
+  // empty and miss every signature. Merge both so nothing that only shows
+  // up in one is lost.
+  const rendered = browser?.ok ? browser : null;
   const detectCtx = {
-    html,
+    html: rendered ? `${html}\n${rendered.renderedHtml}` : html,
     headers,
-    scripts: page.scripts,
+    scripts: rendered ? [...page.scripts, ...rendered.scriptSrcs.map((src) => ({ src }))] : page.scripts,
     stylesheets: page.stylesheets,
-    allLinkTags: page.allLinkTags,
-    metaGenerator: page.metaGenerator,
-    htmlAttrs: page.htmlAttrs,
+    allLinkTags: rendered ? [...page.allLinkTags, ...rendered.linkHrefs.map((href) => ({ href }))] : page.allLinkTags,
+    metaGenerator: page.metaGenerator || rendered?.metaGenerator || "",
+    htmlAttrs: { ...page.htmlAttrs, ...(rendered?.htmlAttrs || {}) },
     cookieNames,
   };
 

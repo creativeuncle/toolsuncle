@@ -154,6 +154,16 @@ const PAGE_AUDIT_SCRIPT = `
     };
   });
 
+  // Post-JS-execution snapshot for tech-stack fingerprinting — a static
+  // fetch only sees the initial HTML, which is near-empty for client-side-
+  // rendered apps (React/Vue/etc. inject their scripts and content after
+  // load). This captures what's actually in the DOM once JS has run.
+  const scriptSrcs = Array.from(document.scripts).map((s) => s.src).filter(Boolean);
+  const linkHrefs = Array.from(document.querySelectorAll("link[href]")).map((l) => l.href);
+  const metaGenerator = document.querySelector('meta[name="generator"]')?.getAttribute("content") || "";
+  const htmlAttrs = {};
+  for (const attr of document.documentElement.attributes) htmlAttrs[attr.name] = attr.value;
+
   return {
     contrastIssues,
     contrastChecked: checked,
@@ -163,6 +173,11 @@ const PAGE_AUDIT_SCRIPT = `
     tinyTapTargets,
     tapTargetCount: tapTargets.length,
     forms,
+    renderedHtml: document.documentElement.outerHTML,
+    scriptSrcs,
+    linkHrefs,
+    metaGenerator,
+    htmlAttrs,
   };
 })();
 `;
