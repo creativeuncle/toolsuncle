@@ -117,10 +117,21 @@ export function analyzePage(html, pageUrl) {
     })
     .get();
 
+  const allLinkTags = $("link[href]")
+    .map((_, el) => {
+      const $el = $(el);
+      return { href: toAbsolute($el.attr("href") || "", pageUrl), rel: ($el.attr("rel") || "").toLowerCase() };
+    })
+    .get()
+    .filter((l) => l.href);
+
   return {
     $,
     origin,
     title: $("title").first().text().trim(),
+    metaGenerator: $('meta[name="generator"]').attr("content") || "",
+    htmlAttrs: $("html").length ? $("html").get(0).attribs || {} : {},
+    allLinkTags,
     metaDescription: $('meta[name="description"]').attr("content") || "",
     canonical: $('link[rel="canonical"]').attr("href") || "",
     viewportMeta: $('meta[name="viewport"]').attr("content") || "",

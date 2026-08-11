@@ -11,6 +11,7 @@ import { accessibilityCheck } from "./checks/accessibility.js";
 import { completenessCheck } from "./checks/completeness.js";
 import { technicalCheck } from "./checks/technical.js";
 import { designCheck } from "./checks/design.js";
+import { techCheck } from "./checks/tech.js";
 
 const ADMIN_PATHS = ["/wp-admin/", "/admin/", "/administrator/"];
 const MAX_LINKS_TO_CHECK = 15;
@@ -97,6 +98,7 @@ export async function runScan(rawUrl, options = {}) {
   const ctx = {
     page,
     $: page.$,
+    html: mainFetch.body,
     targetUrl,
     finalUrl: mainFetch.finalUrl,
     origin,
@@ -115,6 +117,8 @@ export async function runScan(rawUrl, options = {}) {
     (cat) => ({ ...cat, score: scoreFromIssues(cat.issues), issueCount: cat.issues.length })
   );
 
+  const techStack = await techCheck(ctx).catch(() => ({ id: "tech", name: "Technology Stack", groups: [], detectedCount: 0 }));
+
   const totalIssues = categories.reduce((sum, c) => sum + c.issueCount, 0);
   const overallScore = Math.round(categories.reduce((sum, c) => sum + c.score, 0) / categories.length);
 
@@ -128,5 +132,6 @@ export async function runScan(rawUrl, options = {}) {
     totalIssues,
     overallScore,
     categories,
+    techStack,
   };
 }

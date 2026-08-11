@@ -6,7 +6,7 @@ but for now it's local-only while we build it out.
 
 Enter a URL, get an instant scan across Security, SEO, AEO (answer-engine
 optimization), Performance, Accessibility, Website Completeness, Technical
-Bugs, and UI/UX Design.
+Bugs, and UI/UX Design — plus a detected Technology Stack panel.
 
 Two scan modes:
 - **Quick scan** (default) — one HTTP fetch of the homepage, parsed with
@@ -79,6 +79,17 @@ Two deliberate scope decisions:
   the actual rendered layout.
 
 Each category card in the UI also shows its own "Coming soon" list.
+
+**Technology Stack panel** (every scan, not just deep scan): in-house
+fingerprinting — same approach as Wappalyzer/BuiltWith — pattern-matching
+HTML, response headers, cookies, and script/stylesheet URLs against known
+signatures (`backend/src/scanner/techSignatures.js`). Detects CMS/website
+builder, frontend framework, backend language, CDN/hosting, analytics tags,
+fonts, chat widgets, and payment providers, no third-party API. Also does a
+direct TLS handshake (`backend/src/scanner/sslInfo.js`, Node's built-in `tls`
+module) to read the SSL certificate issuer. This is pattern-matching, not
+exhaustive — it can miss technologies that don't leave a detectable public
+fingerprint (documented in the UI itself, under the panel).
 
 ## Also planned
 

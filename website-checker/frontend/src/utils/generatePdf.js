@@ -33,6 +33,28 @@ export function generateReportPdf(result) {
   y += 10;
   doc.setTextColor(0);
 
+  if (result.techStack?.groups?.length > 0) {
+    y = ensureSpace(doc, y, 14);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.text(`Technology Stack  (${result.techStack.detectedCount} detected)`, MARGIN, y);
+    y += 7;
+
+    result.techStack.groups.forEach((group) => {
+      y = ensureSpace(doc, y, 8);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9.5);
+      doc.setTextColor(60);
+      doc.text(group.label + ":", MARGIN + 2, y);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(0);
+      const lines = doc.splitTextToSize(group.items.join(", "), CONTENT_WIDTH - 35);
+      doc.text(lines, MARGIN + 35, y);
+      y += 4.5 * Math.max(1, lines.length) + 1;
+    });
+    y += 6;
+  }
+
   result.categories.forEach((cat) => {
     y = ensureSpace(doc, y, 14);
     doc.setFont("helvetica", "bold");

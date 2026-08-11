@@ -2,6 +2,7 @@ import { useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link02Icon, FileDownloadIcon, CheckmarkCircle01Icon } from "@hugeicons/core-free-icons";
 import CategoryCard from "./CategoryCard";
+import TechStackCard from "./TechStackCard";
 import { generateReportPdf } from "../utils/generatePdf";
 
 export default function ResultsView({ result }) {
@@ -51,6 +52,8 @@ export default function ResultsView({ result }) {
           </div>
         )}
       </div>
+
+      <TechStackCard techStack={result.techStack} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {result.categories.map((cat) => (
